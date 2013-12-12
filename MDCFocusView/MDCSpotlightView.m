@@ -62,11 +62,22 @@
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, locations);
 
     CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-    CGFloat radius = MIN(rect.size.width/2, rect.size.height/2);
+    CGFloat radius = MIN(rect.size.width/3, rect.size.height/3);
     CGContextDrawRadialGradient(context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
 
     CGGradientRelease(gradient);
     CGColorSpaceRelease(colorSpace);
+    
+    // line
+    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextSetLineWidth(context, 0.5f);
+    CGContextMoveToPoint(context, self.frame.size.width/2, self.frame.size.height-self.frame.size.height/4);
+    CGContextAddLineToPoint(context, self.frame.size.width/2, self.frame.size.height);
+    CGContextStrokePath(context);
+    
+    // circle
+    CGContextSetRGBFillColor(context, 255, 255, 255, 1);
+    CGContextFillEllipseInRect(context, CGRectMake((self.frame.size.width/2)-2.5f, self.frame.size.height-5, 5, 5));
 }
 
 @end
