@@ -42,4 +42,16 @@
     return self;
 }
 
+- (id)initWithFocalView:(UIView *)focalView withLineHight:(int)lineHiehgt {
+    self = [super initWithFrame:focalView.frame];
+    if (self) {
+        self.lineHeigth = lineHiehgt;
+        _focalView = focalView;
+        
+        self.opaque = NO;
+        self.userInteractionEnabled = NO;
+    }
+    return self;
+}
+
 @end
