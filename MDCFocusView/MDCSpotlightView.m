@@ -25,6 +25,12 @@
 
 #import "MDCSpotlightView.h"
 
+@interface MDCSpotlightView(){
+    CGRect focusFrame;
+    CGFloat margin;
+}
+
+@end
 
 @implementation MDCSpotlightView
 
@@ -36,7 +42,13 @@
     if (self) {
         CGRect focalRect = focalView.frame;
 
-        CGFloat margin = MAX(focalRect.size.width, focalRect.size.height);
+        margin = MAX(focalRect.size.width, focalRect.size.height);
+        
+        focusFrame = CGRectMake(focalRect.origin.x - margin/2,
+                                focalRect.origin.y - margin/2,
+                                focalRect.size.width + margin,
+                                focalRect.size.height + margin);
+        
         self.frame = CGRectMake(focalRect.origin.x - margin/2,
                                 focalRect.origin.y - margin/2,
                                 focalRect.size.width + margin,
@@ -45,6 +57,27 @@
     return self;
 }
 
+- (id)initWithFocalView:(UIView *)focalView withLineHight:(int)lineHiehgt{
+    self = [super initWithFocalView:focalView];
+    if (self) {
+        self.lineHeigth = lineHiehgt;
+        
+        CGRect focalRect = focalView.frame;
+        
+        margin = MAX(focalRect.size.width, focalRect.size.height);
+        
+        focusFrame = CGRectMake(focalRect.origin.x - margin/2,
+                                focalRect.origin.y - margin/2,
+                                focalRect.size.width + margin,
+                                focalRect.size.height + margin);
+        
+        self.frame = CGRectMake(focalRect.origin.x - margin/2,
+                                focalRect.origin.y - margin/2,
+                                focalRect.size.width + margin,
+                                focalRect.size.height + margin + lineHiehgt);
+    }
+    return self;
+}
 
 #pragma mark - UIView Overrides
 
@@ -60,24 +93,25 @@
     ];
 
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, locations);
-
-    CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-    CGFloat radius = MIN(rect.size.width/3, rect.size.height/3);
+    
+    CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect)+focusFrame.size.height/2);
+    CGFloat radius = MIN(focusFrame.size.width/3, focusFrame.size.height/3);
     CGContextDrawRadialGradient(context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
-
+    
     CGGradientRelease(gradient);
     CGColorSpaceRelease(colorSpace);
     
     // line
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextSetLineWidth(context, 0.5f);
-    CGContextMoveToPoint(context, self.frame.size.width/2, self.frame.size.height-self.frame.size.height/4);
-    CGContextAddLineToPoint(context, self.frame.size.width/2, self.frame.size.height);
+    CGFloat startY = (focusFrame.size.height/4) *3;
+    CGContextMoveToPoint(context, self.frame.size.width/2, startY);
+    CGContextAddLineToPoint(context, self.frame.size.width/2, self.frame.size.height-10);
     CGContextStrokePath(context);
     
     // circle
     CGContextSetRGBFillColor(context, 255, 255, 255, 1);
-    CGContextFillEllipseInRect(context, CGRectMake((self.frame.size.width/2)-2.5f, self.frame.size.height-5, 5, 5));
+    CGContextFillEllipseInRect(context, CGRectMake((self.frame.size.width/2)-2.5f, self.frame.size.height-10, 5, 5));
 }
 
 @end

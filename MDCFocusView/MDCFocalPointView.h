@@ -29,7 +29,10 @@
 @interface MDCFocalPointView : UIView
 
 @property (nonatomic, strong, readonly) UIView *focalView;
+@property (nonatomic,assign) int lineHeigth;
 
 - (id)initWithFocalView:(UIView *)focalView;
+
+- (id)initWithFocalView:(UIView *)focalView withLineHight:(int)lineHiehgt;
 
 @end

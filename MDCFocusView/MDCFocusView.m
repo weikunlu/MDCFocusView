@@ -113,7 +113,7 @@
     NSMutableArray *focii = [NSMutableArray arrayWithCapacity:[views count]];
 
     for (UIView *view in views) {
-        MDCFocalPointView *focalPointView = [[self.focalPointViewClass alloc] initWithFocalView:view];
+        MDCFocalPointView *focalPointView = [[self.focalPointViewClass alloc] initWithFocalView:view withLineHight:view.tag];
         [self addSubview:focalPointView];
         focalPointView.frame = [self convertRect:focalPointView.frame
                                         fromView:focalPointView.focalView.superview];
